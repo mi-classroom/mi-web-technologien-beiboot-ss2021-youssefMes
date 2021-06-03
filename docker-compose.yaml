@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  client:
+    container_name: imgreader_client
+    build:
+      context: ./client
+    volumes:
+      - "./client:/client:cached"
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    links:
+      - server
+    tty: true
+    stdin_open: true
+
+  server:
+    container_name: imgreader_server
+    build:
+      context: ./server
+    volumes:
+      - "./server:/server:cached"
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
