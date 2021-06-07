@@ -4,14 +4,18 @@ import {TreeItem} from "@material-ui/lab";
 import TreeView from '@material-ui/lab/TreeView';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import {useStyles} from "../style/style";
+import {getFiles} from '../utils'
 
 export default function FileSystemNavigator(props) {
     const [structure, setStructure] = useState({})
-    const {setSelectedImage} = props
+    const classes = useStyles();
+    const {setSelectedImage, setFiles} = props
     useEffect(() => {
         async function fetchTree() {
             const res = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/tree`)
             setStructure(res.data)
+            setFiles(getFiles([res.data]))
         }
         fetchTree()
     }, []);
@@ -42,5 +46,9 @@ export default function FileSystemNavigator(props) {
         }
     }
 
-    return <TreeView>{Object.keys(structure).length !== 0 && getTree(structure)}</TreeView>
+    return (
+        <TreeView className={classes.treeView}>
+            {Object.keys(structure).length !== 0 && getTree(structure)}
+        </TreeView>
+    )
 }
