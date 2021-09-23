@@ -10,7 +10,7 @@ import {getFiles} from '../utils'
 export default function FileSystemNavigator(props) {
     const [structure, setStructure] = useState({})
     const classes = useStyles();
-    const {setSelectedImage, setFiles} = props
+    const {setSelectedFile, setFiles} = props
     useEffect(() => {
         async function fetchTree() {
             const res = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/tree`)
@@ -21,8 +21,8 @@ export default function FileSystemNavigator(props) {
     }, []);
 
 
-    const handleClick = image => e => {
-        setSelectedImage(image)
+    const handleClick = file => e => {
+        setSelectedFile(file)
     }
     const getTree = (node) => {
         if (node.type === 'file') {

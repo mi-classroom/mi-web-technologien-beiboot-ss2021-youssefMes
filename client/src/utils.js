@@ -1,7 +1,6 @@
-import {TreeItem} from "@material-ui/lab";
-import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
-import FolderOpenOutlinedIcon from "@material-ui/icons/FolderOpenOutlined";
 import React from "react";
+import ImageView from "./components/ImageView";
+import JsonView from "./components/JsonView";
 
 export function getUrl(path) {
     const url = path.replace('data', '')
@@ -21,4 +20,18 @@ export function getFiles(nodes){
     }
     traverseTree(nodes)
     return files
+}
+
+export function renderComponent(file) {
+    switch (file.extension) {
+        case '.jpeg':
+        case '.jpg':
+        case '.png':
+            return <ImageView file={file}/>
+        case '.json':
+            return <JsonView file={file}/>
+        case '.dzi':
+            return <div>No Preview Available</div>
+
+    }
 }
