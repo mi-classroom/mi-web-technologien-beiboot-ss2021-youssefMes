@@ -26,6 +26,7 @@ export function renderComponent(file) {
     switch (file.extension) {
         case '.jpeg':
         case '.jpg':
+        case '.jpg_original':
         case '.png':
             return <ImageView file={file}/>
         case '.json':

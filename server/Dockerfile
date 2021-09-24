@@ -1,8 +1,8 @@
-FROM mhart/alpine-node
+FROM mhart/alpine-node:15.0.1
 
 WORKDIR /server
 
-COPY . /server
+COPY . .
 
 RUN npm install
 

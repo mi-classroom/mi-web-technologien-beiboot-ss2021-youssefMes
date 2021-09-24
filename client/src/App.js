@@ -1,15 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import FileSystemNavigator from './components/FileSystemNavigator';
 import SearchAppBar from './components/AppBar';
-import Metadata from './components/Metadata';
 import SearchField from './components/SearchField';
-import {getUrl, renderComponent} from "./utils";
+import {renderComponent} from "./utils";
 import './App.css';
 import {Divider} from "@material-ui/core";
-import axios from "axios";
 import SearchList from "./components/SearchList";
-import ImageView from "./components/ImageView";
-import JsonView from "./components/JsonView";
 
 export default function App() {
     const [selectedFile, setSelectedFile] = useState(null)
