@@ -1,16 +1,11 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {Button} from "@material-ui/core";
 import axios from "axios";
-import _ from 'lodash'
 import '../App.css'
+import {IoMdSave} from "react-icons/all";
+import {LinearProgress} from "@material-ui/core";
+import { Progress } from "@chakra-ui/react"
+
 const useStyles = makeStyles({
     table: {
         width: '100%',
@@ -30,49 +25,171 @@ const useStyles = makeStyles({
         backgroundColor: "#4BB543"
     }
 });
-export default function Metadata({data, fields, updateFields}) {
-    const classes = useStyles();
-    const handleReset = () => updateFields({})
+export default function Metadata({data, fields, updateFields, path}) {
     const handleSubmit = () => updateData()
 
     const updateData = async () => {
         await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/update-metadata`, {
-            params: fields
+            params: fields,
+            path: path
         })
     }
     const handleChange = (e) => {
         updateFields({...fields, [e.target.name]: e.target.value})
     }
     return (
-        <TableContainer component={Paper} className={classes.container}>
-            <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell width="60%" colSpan={_.isEmpty(fields) ? 2 : 1}>Metadata</TableCell>
-                            {!_.isEmpty(fields) && (
-                                <TableCell>
-                                    <Button className={classes.resetButton} onClick={handleReset}>Discard</Button>
-                                    <Button className={classes.submitButton} onClick={handleSubmit}>Submit</Button>
-                                </TableCell>
-                            )}
-                            </TableRow>
-                </TableHead>
-                <TableBody>
-                    {Object.entries({...data, ...fields}).map(([key, value]) => {
-                        return (
-                            <TableRow key={key}>
-                                <TableCell component="th" scope="row">
-                                    {key}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <input name={key} value={typeof value === 'object' ? value['value'] : value}
-                                           onChange={handleChange} />
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div className={'metadata'}>
+            <form className={'metadata__form'}>
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="title"
+                        defaultValue={''}
+                        value={fields.title || data.title}
+                        onChange={handleChange}
+                    />
+
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.title?.length || data.title.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Titel</label><br/>
+                <div style={{display: 'grid'}}>
+                    <textarea
+                        className={'metadata__form__input__text'}
+                        name="description"
+                        defaultValue={''}
+                        value={fields.description || data.description}
+                        onChange={handleChange}
+                    />
+
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.description?.length || data.description.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Dateiart / Beschreibung</label><br/>
+
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="author"
+                        defaultValue={''}
+                        value={fields.copyright || data.copyright}
+                        onChange={handleChange}
+                    />
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.copyright?.length || data.copyright.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Autor / Rechte</label><br/>
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="source"
+                        defaultValue={''}
+                        value={fields.source || data.source}
+                        onChange={handleChange}
+                    />
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.source?.length || data.source.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Quelle</label><br/>
+            </form>
+            <form className={'metadata__form'}>
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="title"
+                        defaultValue={''}
+                        value={fields.title || data.title}
+                        onChange={handleChange}
+                    />
+
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.title?.length || data.title.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Titel</label><br/>
+                <div style={{display: 'grid'}}>
+                    <textarea
+                        className={'metadata__form__input__text'}
+                        name="description"
+                        defaultValue={''}
+                        value={fields.description || data.description}
+                        onChange={handleChange}
+                    />
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.description?.length || data.description.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Dateiart / Beschreibung</label><br/>
+
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="author"
+                        defaultValue={''}
+                        value={fields.copyright || data.copyright}
+                        onChange={handleChange}
+                    />
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.copyright?.length || data.copyright.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Autor / Rechte</label><br/>
+                <div style={{display: 'grid'}}>
+                    <input
+                        className={'metadata__form__input'}
+                        type="text"
+                        name="source"
+                        defaultValue={''}
+                        value={fields.source || data.source}
+                        onChange={handleChange}
+                    />
+                    <progress
+                        className={'metadata__form__input__progress'}
+                        value={fields.source?.length || data.source.length}
+                        max="32"
+                    />
+                </div>
+                <br/>
+                <label className={'metadata__form__label'}>Quelle</label><br/>
+            </form>
+            <br/>
+            <button
+                className={'metadata__button'}
+                onClick={handleSubmit}
+            >
+                <IoMdSave className={'metadata__button__icon'}/>
+                Speichern
+            </button>
+        </div>
     );
 }

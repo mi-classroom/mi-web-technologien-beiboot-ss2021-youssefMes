@@ -1,0 +1,32 @@
+@import "variables";
+
+.MuiTreeItem-label {
+  font-family: $font-sans-serif !important;
+  font-size: $s!important;
+  width: 0%!important;
+}
+
+.MuiTreeItem-group {
+  margin-left: -17px!important;
+}
+
+.MuiTreeItem-root {
+  padding: 0 1rem!important;
+}
+
+.MuiSvgIcon-root {
+  fill: $accent;
+}
+
+.MuiTypography-body1 {
+  font-family: $font-sans-serif !important;
+  font-size: $s!important;
+}
+
+.MuiIconButton-root {
+  color: $medium!important;
+  font-size: $s !important;
+  float: left;
+  cursor: pointer;
+  margin: 2rem;
+}

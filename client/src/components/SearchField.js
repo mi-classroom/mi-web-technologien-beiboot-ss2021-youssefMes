@@ -6,14 +6,14 @@ import Fuse from 'fuse.js';
 import {debounce} from 'lodash';
 
 export default function SearchField(props) {
-    const classes = useStyles();
-    const {files, setResult} = props
-    const fuse = new Fuse(files, {
+    const {files, folders, setResult, setSearchText} = props
+    const fuse = new Fuse([...files, ...folders], {
          keys: ['name'],
          includeScore: true
      });
     const delayedHandleChange = debounce((value) => {
         const res = fuse.search(value).map(el => el.item)
+        setSearchText(value)
         setResult(res)
     }, 1000);
 
@@ -23,17 +23,10 @@ export default function SearchField(props) {
     }
 
     return (
-        <div className={classes.search}>
-            <div className={classes.searchIcon}>
-                <SearchIcon />
-            </div>
+        <div className={'navigator__search'}>
+            <SearchIcon className={'navigator__search__icon'}/>
             <InputBase
-                placeholder="Search…"
-                classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
+                className={'navigator__search__input'}
                 onChange={handleChange}
             />
         </div>

@@ -1,0 +1,150 @@
+@import "variables";
+
+body {
+  background-color: $darkest;
+}
+
+.navigator {
+    float: left;
+    width: 25%;
+    height: 100%;
+    background-color: $darker;
+    position: fixed;
+    overflow-x: hidden;
+}
+
+.navigator__items {
+  color: $lightest;
+}
+
+.navigator__icons {
+  color: $accent;
+}
+
+.navigator__search {
+  background-color: $darker;
+  height: 4rem;
+}
+.navigator__title {
+  color: $accent;
+  font-family: $font-sans-serif;
+  font-weight: $fw-light;
+  font-size: 1.6rem;
+  text-align: left;
+  width: 85%;
+  margin: 1.5rem auto;
+}
+.navigator__search__input {
+  background-color: $darker;
+  color: $lightest!important;
+  width: 85%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: solid $accent 1px;
+  padding-left: 1.5rem;
+  height: 1.5rem;
+}
+.navigator__search__icon {
+  position: absolute;
+  font-weight: $fw-light;
+  fill: $accent!important;
+  z-index: $level-content;
+}
+.viewer {
+  float: right;
+  width: 75%;
+  margin-top: 2rem;
+  background-color: $darkest;
+}
+
+.viewer__image__drawer {
+  position: fixed;
+  background-color: $dark;
+  bottom: 0;
+  width: 100%;
+  display: block;
+}
+
+.viewer__image__drawer--small {
+  height: 5rem;
+}
+
+.viewer__image__drawer--big {
+  height: 30rem;
+}
+
+.metadata__header {
+  color: $light;
+  font-size: $s;
+  float: left;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  display: inline-block;
+  width: 100%;
+
+}
+
+.metadata__header_icon{
+  color: $accent;
+  cursor: pointer;
+  margin-right: 0.1rem;
+}
+
+.metadata {
+  display: inline-block;
+  float: left;
+}
+
+.metadata__form {
+  float: left;
+  color: $light;
+}
+.metadata__form__label {
+  margin: -1rem 1rem;
+  float: left;
+  font-size: $s;
+}
+
+.metadata__form__input {
+  width: 25rem;
+  height: 1rem;
+  margin: 1rem 1rem 0.1rem;
+  border: none;
+  background-color: $lighten;
+  color: $light;
+}
+
+.metadata__form__input__text {
+  width: 25rem;
+  margin: 1rem 1rem 0;
+  border: none;
+  background-color: $lighten;
+  color: $light;
+}
+
+.metadata__button {
+  float: left;
+  margin: 1rem;
+  height: 2rem;
+  background-color: $accent;
+  font-size: $s;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.metadata__button__icon{
+  color: $darkest;
+  font-size: $s;
+  margin-right: 0.2rem;
+}
+
+.metadata__form__input__progress {
+  width: 25rem;
+  top: 0;
+  height: 0.2rem;
+  margin-left: 1rem;
+}
+

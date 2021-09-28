@@ -3,10 +3,16 @@ import axios from "axios";
 import {getUrl} from "../utils";
 import Metadata from "./Metadata";
 import '../App.css'
-import {Button} from "@material-ui/core";
+import {Button, Drawer} from "@material-ui/core";
+import 'react-medium-image-zoom/dist/styles.css'
+import Zoom from 'react-medium-image-zoom'
+import {AiOutlineUnorderedList, BiRectangle, ImFloppyDisk} from "react-icons/all";
+
 export default function ImageView({file}) {
     const [data, setData] = useState(null)
     const [updatedFields, setUpdatedFields] = useState( {})
+    const [isOpen, setIsOpen] = useState( false)
+    const [size, setSize] = useState( 'small')
     async function getData() {
         const res = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/get-exif-data`, {
             params: {
@@ -20,23 +26,33 @@ export default function ImageView({file}) {
         getData()
     }, [file])
 
-    const handleClick = async () => {
-        const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/download`, {
-            params: {
-                path: file.path,
-                data: data
-            }
-        })
-        const a = document.createElement("a"); //Create <a>
-        a.href = "data:application/octet-stream;base64," + res.data; //Image Base64 Goes here
-        a.download = "artifact.zip"; //File name Here
-        a.click(); //Downloaded file
+    const toggle = () => {
+        setSize(size === 'small' ? 'big' : 'small')
     }
+
     return (
-        <>
-            <Button color={'primary'} onClick={handleClick}>Download Artifact</Button>
+        <div style={{width: '100%'}}>
             <img className='img' alt={file.name} src={getUrl(file.path)}/>
-            {data && <Metadata data={data} fields={updatedFields} updateFields={setUpdatedFields}/>}
-        </>
+            <div className={`viewer__image__drawer viewer__image__drawer--${size}`}>
+                {data && <div className={'metadata__header'}>
+                    <span style={{float: 'left'}}>
+                        <BiRectangle className={'metadata__header_icon'}/>
+                         Größe: {data.size || ''}
+                    </span><br/><br/>
+                    <span style={{float: 'left'}}>
+                        <AiOutlineUnorderedList
+                            className={'metadata__header_icon'}
+                            onClick={toggle}
+                        /> IPTC:-
+                    </span>
+                </div>}
+                <br/>
+                {size === 'big' && data &&
+                    <Metadata data={data} fields={updatedFields} updateFields={setUpdatedFields} path={file.path}/>
+                }
+            </div>
+            {/*<Button color={'primary'} onClick={handleClick}>Download Artifact</Button>*/}
+            {/*{data && <Metadata data={data} fields={updatedFields} updateFields={setUpdatedFields} path={file.path}/>}*/}
+        </div>
     );
 }

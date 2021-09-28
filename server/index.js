@@ -12,6 +12,8 @@ const port = 9000;
 const tree = dirTree("data");
 const bodyParser = require('body-parser')
 const AdmZip = require("adm-zip");
+const sizeOf = require('image-size');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -39,40 +41,55 @@ app.get('/get-exif-data', function(req, res) {
     }
     try {
         exifr.parse(path, true)
-            .then(output => res.send(output))
+            .then(output => {
+                const dimensions = sizeOf(path);
+                const result = {
+                    ...output,
+                    title: output.title ?? 'No title found',
+                    description: typeof output.description === 'object' ? output.description.value : output.description ?? '',
+                    source: output.source ?? 'No source found',
+                    copyright: output.copyright ?? 'No copyright found',
+                    size: `${dimensions.width}x${dimensions.height}`
+                }
+                res.send(result)
+            })
     } catch (error) {
-        res.send(error.message)
+        res.status(400).send(error.message)
     }
 });
 
 app.post('/update-metadata', async function(req, res) {
     try {
-        const {params} = req.body
-        const files = getFiles(tree)
+        const {params, path} = req.body
         await ep.open()
-        files.map(async file => await ep.writeMetadata(file, params, ['overwrite_original'], false))
+        await ep.writeMetadata(path, params, ['overwrite_original'], false)
         await ep.close()
         res.send('Images Update Succesfully')
     } catch (error) {
-        res.send(error)
+        res.status(400).json(error)
     }
 });
 
 app.post('/download', function(req, res) {
     try {
-        const {path, data} = req.body.params
+        const {path} = req.body.params
+        const files = getFiles(dirTree(path), true) ?? []
         const zip = new AdmZip();
-        zip.addLocalFile(path);
-        zip.addFile("image-data.json", Buffer.from(JSON.stringify(data, null, 3), "utf8"), "entry comment goes here");
+        files.map(async file => {
+            zip.addLocalFile(file);
+            const data = await exifr.parse(file, true)
+            const filename = Path.parse(file)
+            zip.addFile(`${filename.name}.json`, Buffer.from(JSON.stringify(data, null, 3), "utf8"), "entry comment goes here");
+        })
         const buff = zip.toBuffer()
         res.send(buff.toString('base64'))
     } catch (error) {
-        res.send(error)
+        console.log(error)
     }
 });
 
 let files = []
-function getFiles(tree){
+function getFiles(tree, includeName = false){
     function traverseTree(tree) {
         if (tree.type === 'file') {
             if (['.jpg', '.png', '.jpg_original'].indexOf(tree.extension) > -1) {

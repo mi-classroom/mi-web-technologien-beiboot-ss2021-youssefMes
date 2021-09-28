@@ -22,6 +22,20 @@ export function getFiles(nodes){
     return files
 }
 
+export function getFolders(nodes){
+    const folders = [];
+    function traverseTree(nodes) {
+        nodes.map(node => {
+            if (node.type === 'directory') {
+                folders.push(node)
+                traverseTree(node.children)
+            }
+        })
+    }
+    traverseTree(nodes)
+    return folders
+}
+
 export function renderComponent(file) {
     switch (file.extension) {
         case '.jpeg':
